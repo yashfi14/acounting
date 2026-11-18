@@ -1,7 +1,14 @@
+nama:yashfi ramadhan
+nim:43250603
+prodi:sistem informasi
+kelas:4c-si-2025
+link pengumpulan video tahap1:https://youtu.be/MpiZivTUI5A
+link pengumpulan video tahap2:https://youtu.be/RPxnj3zyVVU
+link pengumpulan video demo tahap3:https://youtu.be/MvGwZUoGKRc
+
 # 📊 Acounting — Aplikasi Kasir & Manajemen Stok
 
 **Acounting** adalah aplikasi manajemen stok dan kasir (Point-of-Sale) berbasis web yang dirancang untuk UMKM dan usaha kecil. Dibangun dengan arsitektur **MVC Native PHP** tanpa framework berat, namun dilengkapi sistem autentikasi berlapis, verifikasi identitas, dan AI Assistant.
-
 ---
 
 ## ✨ Fitur Utama
