@@ -1,0 +1,103 @@
+<?php
+require_once __DIR__ . '/../../Services/MenuImageService.php';
+$menuImage = MenuImageService::resolve($data['product']['product_name'] ?? '', $data['product']['image'] ?? null);
+?>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">Edit Barang & Stok</h5>
+                </div>
+                <div class="card-body">
+                    <?php if (!empty($data['errors'])): ?>
+                        <div class="alert alert-danger rounded-3">
+                            <strong><i class="bi bi-exclamation-triangle me-1"></i>Periksa inputan Anda:</strong>
+                            <ul class="mb-0 mt-1">
+                                <?php foreach ($data['errors'] as $e): ?>
+                                    <li><?= htmlspecialchars($e, ENT_QUOTES, 'UTF-8'); ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+
+                    <form action="<?= BASEURL; ?>/product/update/<?= $data['product']['id']; ?>" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="<?= CSRF::token(); ?>">
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nama Barang <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name" required value="<?= htmlspecialchars($data['product']['product_name']); ?>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="stock" class="form-label">Update Stok <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="stock" name="stock" required min="0" value="<?= $data['product']['stock']; ?>">
+                            <div class="form-text">Stok tidak boleh bernilai negatif.</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="price" class="form-label">Harga (Rp) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="price" name="price" required min="0" step="any" value="<?= (int)$data['product']['price']; ?>">
+                            <div class="form-text">Harga harus berupa angka valid.</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="image" class="form-label fw-medium">Gambar Menu</label>
+                            <div class="d-flex align-items-center gap-3 p-3 rounded-3 border bg-light">
+                                <img id="imagePreview" src="<?= htmlspecialchars($menuImage['url'], ENT_QUOTES, 'UTF-8'); ?>" alt="Gambar menu"
+                                     class="rounded-3 object-fit-cover shadow-sm flex-shrink-0"
+                                     style="width: 92px; height: 72px; background:#fff;">
+                                <div class="flex-grow-1">
+                                    <input type="file" class="form-control" id="image" name="image"
+                                           accept="image/jpeg,image/png,image/webp">
+                                    <div class="form-text mb-0">
+                                        Pilih file baru untuk mengganti gambar. JPG, PNG, atau WEBP, maksimal 3 MB.
+                                        <?= $menuImage['is_fallback'] ? 'Saat ini memakai ilustrasi otomatis.' : ''; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4 p-3 bg-light rounded-3 border">
+                            <label class="form-label fw-medium d-block mb-1">Status Publik (Katalog Pelanggan)</label>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="is_active" name="is_active" value="1" <?= (!isset($data['product']['is_active']) || $data['product']['is_active'] == 1) ? 'checked' : ''; ?>>
+                                <label class="form-check-label text-secondary small" for="is_active">
+                                    Tampilkan barang ini di Katalog Menu/Barang Pelanggan
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <a href="<?= BASEURL; ?>/product" class="btn btn-secondary me-2">Batal</a>
+                            <button type="submit" class="btn btn-warning">Perbarui Barang</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    var input = document.getElementById('image');
+    var preview = document.getElementById('imagePreview');
+    if (!input || !preview) { return; }
+    input.addEventListener('change', function () {
+        var file = input.files && input.files[0];
+        if (!file) { return; }
+        if (!/^image\/(jpeg|png|webp)$/.test(file.type)) {
+            alert('Format gambar harus JPG, PNG, atau WEBP.');
+            input.value = '';
+            return;
+        }
+        if (file.size > 3 * 1024 * 1024) {
+            alert('Ukuran gambar maksimal 3 MB.');
+            input.value = '';
+            return;
+        }
+        preview.src = URL.createObjectURL(file);
+    });
+})();
+</script>

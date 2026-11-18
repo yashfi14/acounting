@@ -1,0 +1,49 @@
+# === Konfigurasi Sensitif ===
+.env
+.env.local
+.env.*.local
+
+# === Log Files ===
+*.log
+logs/
+storage/logs/
+
+# === Secret Storage (jangan commit kunci enkripsi) ===
+storage/*.key
+storage/*.secret
+
+# === Cache ===
+cache/
+tmp/
+temp/
+
+# === OS Files ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# === Editor & IDE ===
+.idea/
+*.swp
+*.swo
+*~
+
+# === Vendor (jika menggunakan Composer) ===
+vendor/
+
+# === Node Modules (jika ada) ===
+node_modules/
+
+# === File Uji / Diagnostik Lokal ===
+scratch/
+count_trx.php
+
+# === Upload Pengguna (jangan commit foto pelanggan) ===
+public/uploads/products/*
+!public/uploads/products/.gitkeep
+
